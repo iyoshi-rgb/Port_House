@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   purchases     Purchase[] // 購入履歴へのリレーション
   sessions      Session[]
+  articles      Article[]
 }
 
 model Purchase {
@@ -64,4 +65,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Article {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()"))
+  userId    String
+  title     String
+  summary   String
+  videoPath String
+  gitUrl    String
+  appUrl    String
+  createdat DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
