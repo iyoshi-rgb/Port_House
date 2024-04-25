@@ -1,16 +1,8 @@
+import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
-
-export const connect = async () => {
-    try {
-        //prismaでデータベースに接続
-        prisma.$connect();
-    } catch (error) {
-        return Error("DB接続失敗しました")
-    }
-}
 
 export const GET = async (req: Request, res: NextResponse) => {
     try {
