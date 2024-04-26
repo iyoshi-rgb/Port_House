@@ -1,14 +1,18 @@
 import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 export const GET = async (req: Request, res: NextResponse) => {
-    try {
+    const id = req.url.split("/my_page/")[1];
+   try {
         await connect();
-        const articles = await prisma.article.findMany();
-        return NextResponse.json({message: 'Success', articles},{status: 200});
+        const user = await prisma.user.findUnique({where: {
+            id: id
+        }});
+        return NextResponse.json({message: 'Success',user},{status: 200});
     }catch(err){
         return NextResponse.json({message: 'Error',err}, {status: 500})
 

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/auth";
 import { UserButton } from "./Header/user_button";
-import Component, { SignIn } from "./session_button";
+import { SignIn } from "./session_button";
+import { Button } from "@chakra-ui/react";
 
 export const Header = async () => {
   const session = await getServerSession(nextAuthOptions);
@@ -19,7 +20,12 @@ export const Header = async () => {
         </div>
         {user ? (
           <>
-            <UserButton />
+            <UserButton id={user.id} />
+            <Link href={"/create"}>
+              <Button colorScheme="teal" size="md">
+                投稿する
+              </Button>
+            </Link>
           </>
         ) : (
           <></>

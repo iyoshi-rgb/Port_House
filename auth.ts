@@ -17,13 +17,10 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     session: ({ session, user }) => {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: user.id,
-        },
-      };
+      if (session?.user) {
+        session.user.id = user.id;
+      }
+      return session;
     },
   },
 };

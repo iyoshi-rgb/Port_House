@@ -17,7 +17,7 @@ export function SignIn() {
   if (!session) {
     return (
       <>
-        <button onClick={() => signIn()}>GitHub</button>
+        <button onClick={() => signIn("github")}>GitHub</button>
         <button onClick={() => signIn()}>Google</button>
       </>
     );

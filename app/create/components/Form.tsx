@@ -3,17 +3,25 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Preview } from "@/app/create/components/preview";
+import Link from "next/link";
+import { InputGroup, InputLeftAddon, Textarea } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
+import { FaGithub, FaLink } from "react-icons/fa";
 
 export type FormData = {
   video: FileList | null;
   title: string;
   content: string;
+  gitUrl: string;
+  appUrl: string | null;
 };
 
 const defaultValues: FormData = {
   video: null,
   title: "",
   content: "",
+  gitUrl: "",
+  appUrl: "",
 };
 
 const ArticleForm = () => {
@@ -46,13 +54,14 @@ const ArticleForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen pb-5">
+    <div className="flex flex-col items-center min-h-screen py-5">
       <div className="w-3/5 sticky top-0 z-10">
         <div className="flex justify-between items-center pb-5">
-          <div className="flex justify-start space-x-4">
-            <button className="btn btn-ghost text-3xl">
+          <div className="flex justify-start items-center space-x-4">
+            <Link href={"/"}>
               <IoArrowBackOutline />
-            </button>
+            </Link>
+
             <button
               onClick={handleSwitchMode}
               className="btn btn-primary px-4 py-2 text-sm"
@@ -89,27 +98,53 @@ const ArticleForm = () => {
               {fileError && <p className="text-red-500">{fileError}</p>}
             </div>
             <div>
-              <input
+              <Input
                 {...register("title", {
                   required: "アプリ名を入力してください",
                 })}
                 placeholder="アプリ名"
-                className="bg-base-200 p-2 w-full"
               />
+
               {errors.title && (
                 <p className="text-red-500">{errors.title.message}</p>
               )}
             </div>
             <div>
-              <textarea
+              <Textarea
                 {...register("content", { required: "概要を入力してください" })}
                 placeholder="概要"
-                className="bg-base-100 p-2 w-full min-h-[20vh]"
               />
+
               {errors.content && (
                 <p className="text-red-500">{errors.content.message}</p>
               )}
             </div>
+
+            <InputGroup size="sm">
+              <InputLeftAddon>
+                <FaGithub />
+              </InputLeftAddon>
+              <Input
+                {...register("gitUrl", {
+                  required: "gitUrlを入力してください",
+                })}
+                placeholder="GitHub url"
+                variant={"outline"}
+              />
+            </InputGroup>
+
+            <InputGroup size="sm">
+              <InputLeftAddon>
+                <FaLink />
+              </InputLeftAddon>
+              <Input
+                {...register("appUrl", {
+                  required: false,
+                })}
+                placeholder="アプリ Link"
+                variant={"outline"}
+              />
+            </InputGroup>
           </form>
         )}
       </div>
