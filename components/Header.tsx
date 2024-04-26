@@ -11,8 +11,8 @@ export const Header = async () => {
   const user = session?.user;
 
   return (
-    <div className="w-4/5 mx-auto ">
-      <div className="navbar rounded-box border">
+    <div className="w-4/5 mx-auto">
+      <div className="navbar rounded-box border bg-white">
         <div className="flex-1">
           <Link href={"/"} className="btn btn-ghost text-xl">
             PortHouse

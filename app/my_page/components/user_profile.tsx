@@ -1,4 +1,7 @@
+import { Avatar } from "@chakra-ui/react";
 import React from "react";
+import { BsTwitterX } from "react-icons/bs";
+import { FaGithub } from "react-icons/fa";
 
 async function fetchUserData(id: string) {
   const res = await fetch(`http://localhost:3000/api/my_page/${id}`, {
@@ -10,10 +13,19 @@ async function fetchUserData(id: string) {
   return data.user;
 }
 
-const UserProfile = async ({ params }: { params: { id: string } }) => {
-  const user = await fetchUserData(params.id);
-  console.log(user);
-  return <div></div>;
+export const UserProfile = async (id: { id: string }) => {
+  const user = await fetchUserData(id.id);
+  console.log("my_page", user);
+  return (
+    <div className="flex justify-center py-5">
+      <div className="flex flex-col justify-center items-center gap-2">
+        <Avatar size="2xl" name="プロフィール画像" src={user.image} />
+        <span className="text-gray-400 text-3xl">{user.name}</span>
+        <div className="flex items-center gap-5 text-4xl pt-3">
+          <FaGithub />
+          <BsTwitterX />
+        </div>
+      </div>
+    </div>
+  );
 };
-
-export default UserProfile;
