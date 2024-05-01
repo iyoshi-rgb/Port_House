@@ -4,7 +4,8 @@ import { BsTwitterX } from "react-icons/bs";
 import { FaGithub } from "react-icons/fa";
 
 async function fetchUserData(id: string) {
-  const res = await fetch(`http://localhost:3000/api/my_page/${id}`, {
+  const Url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${Url}/api/my_page/${id}`, {
     cache: "no-store", //SSR
   });
 
