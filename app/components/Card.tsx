@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
 
 async function fetchAllArticles() {
-  const res = await fetch("http://localhost:3000/api/article", {
+  const Url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${Url}/api/article`, {
     cache: "no-store", //SSR
   });
 

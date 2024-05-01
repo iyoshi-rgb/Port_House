@@ -3,7 +3,8 @@ import { Avatar, Wrap, WrapItem } from "@chakra-ui/react";
 import Link from "next/link";
 
 async function fetchUserData(id: any) {
-  const res = await fetch(`http://localhost:3000/api/my_page/${id}`, {
+  const Url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${Url}/api/my_page/${id}`, {
     cache: "no-store", //SSR
   });
 
