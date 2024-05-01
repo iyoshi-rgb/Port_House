@@ -18,7 +18,6 @@ export function SignIn() {
     return (
       <>
         <button onClick={() => signIn("github")}>GitHub</button>
-        <button onClick={() => signIn()}>Google</button>
       </>
     );
   }

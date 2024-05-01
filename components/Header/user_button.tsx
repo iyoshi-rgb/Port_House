@@ -23,7 +23,7 @@ export const UserButton = async ({ id }: any) => {
       <Link href={`/my_page/${id}`}>
         <Wrap>
           <WrapItem>
-            <Avatar size="md" name="Segun Adebayo" src={user.image} />
+            {/*<Avatar size="md" name="Segun Adebayo" src={user.image} />*/}
           </WrapItem>
         </Wrap>
       </Link>
