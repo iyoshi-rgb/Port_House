@@ -10,8 +10,8 @@ export const nextAuthOptions: NextAuthOptions = {
   debug: false,
   providers: [
     GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID ?? "",
-      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+      clientId: process.env.AUTH_GITHUB_ID as string,
+      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
     }),
   ],
   adapter: PrismaAdapter(prisma),
