@@ -1,6 +1,17 @@
 import React from "react";
-import { Avatar, Wrap, WrapItem } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
 import Link from "next/link";
+import { GoPerson } from "react-icons/go";
+import { SlNote } from "react-icons/sl";
 
 async function fetchUserData(id: any) {
   const Url = process.env.NEXT_PUBLIC_API_URL;
@@ -16,17 +27,29 @@ async function fetchUserData(id: any) {
 export const UserButton = async ({ id }: any) => {
   const user = await fetchUserData(id);
 
-  console.log(user);
-
   return (
-    <div>
-      <Link href={`/my_page/${id}`}>
-        <Wrap>
-          <WrapItem>
-            {/*<Avatar size="md" name="Segun Adebayo" src={user.image} />*/}
-          </WrapItem>
-        </Wrap>
-      </Link>
-    </div>
+    <Menu>
+      <MenuButton>
+        <WrapItem>
+          {user.image ? (
+            <Avatar size="md" name="userプロフィール画像" src={user.image} />
+          ) : (
+            <Avatar
+              size="md"
+              name="userプロフィールデフォルト画像"
+              src="https://bit.ly/broken-lin"
+            />
+          )}
+        </WrapItem>
+      </MenuButton>
+      <MenuList>
+        <Link href={`/my_page/${id}`}>
+          <MenuItem icon={<GoPerson />}>My page</MenuItem>
+        </Link>
+        <Link href={"/create"}>
+          <MenuItem icon={<SlNote />}>投稿作成</MenuItem>
+        </Link>
+      </MenuList>
+    </Menu>
   );
 };

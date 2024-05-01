@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/auth";
 import { UserButton } from "./Header/user_button";
 import SignOut, { SignIn } from "./session_button";
-import { Button } from "@chakra-ui/react";
 
 export const Header = async () => {
   const session = await getServerSession(nextAuthOptions);
@@ -19,19 +18,16 @@ export const Header = async () => {
           </Link>
         </div>
         {user ? (
-          <>
+          <div className="flex items-center gap-5">
             <UserButton id={user.id} />
-            <Link href={"/create"}>
-              <Button colorScheme="teal" size="md">
-                投稿する
-              </Button>
-            </Link>
+
             <SignOut />
-          </>
+          </div>
         ) : (
-          <></>
+          <>
+            <SignIn />
+          </>
         )}
-        <SignIn />
         <div className="flex-none gap-2"></div>
       </div>
     </div>
