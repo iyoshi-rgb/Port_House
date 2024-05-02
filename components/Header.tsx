@@ -24,11 +24,8 @@ export const Header = async () => {
             <SignOut />
           </div>
         ) : (
-          <>
-            <SignIn />
-          </>
+          <SignIn />
         )}
-        <div className="flex-none gap-2"></div>
       </div>
     </div>
   );
