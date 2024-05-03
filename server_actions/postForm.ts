@@ -1,10 +1,24 @@
 'use server';
+import { createClient } from "@/utils/supabase/client";
 import { nextAuthOptions } from "@/auth";
 import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 const prisma = new PrismaClient();
+const supabase = createClient()
+
+async function UploadFile(file : File, filepath : string){
+    const { data,error } = await supabase.storage
+    .from("porthouse").upload(filepath, file);
+  if (error) {
+    console.log(error)
+    return error;
+  }else{
+    console.log(data)
+    return 'success';
+  }
+}
 
 async function getUserId(){
     const session = await getServerSession(nextAuthOptions);
@@ -24,6 +38,9 @@ export async function saveArticle(formData : FormData) {
     const gitUrl = getStringValue(formData,'gitUrl')
     const appUrl = getStringValue(formData,'appUrl')
     const content = getStringValue(formData,'content')
+
+    const video = formData.get('video')
+    console.log(video)
     
     try{
         await connect()
