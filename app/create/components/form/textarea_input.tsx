@@ -1,6 +1,6 @@
 import { Textarea } from "@chakra-ui/react";
 import { UseFormRegister } from "react-hook-form";
-import { FormData } from "../form";
+import { FormData } from "@/types/formData";
 
 type TextAreaInputProps = {
   register: UseFormRegister<FormData>;
