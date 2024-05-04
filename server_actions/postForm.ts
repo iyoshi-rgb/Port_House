@@ -128,8 +128,7 @@ export async function publicArticle(formData : FormData){
         }
      console.log('success')
     }catch(err){
-        console.log(err)
-        
+       return err        
     }finally{
         await prisma.$disconnect()
     }  
