@@ -1,9 +1,10 @@
 'use server';
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import { nextAuthOptions } from "@/auth";
 import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { v4 as uuidv4 } from "uuid";
 
 const prisma = new PrismaClient();
 const supabase = createClient()
@@ -12,13 +13,12 @@ async function UploadFile(file : File, filepath : string){
     const { data,error } = await supabase.storage
     .from("porthouse").upload(filepath, file);
   if (error) {
-    console.log(error)
     return error;
   }else{
-    console.log(data)
     return 'success';
   }
 }
+
 
 async function getUserId(){
     const session = await getServerSession(nextAuthOptions);
@@ -26,28 +26,41 @@ async function getUserId(){
    return user?.id;
 }
 
-
 function getStringValue(formData : FormData, fieldName : string): string | null{
     const value = formData.get(fieldName);
     return typeof value === 'string' ? value : null;
 }
 
+
 export async function saveArticle(formData : FormData) {
+    console.log(formData)
+    let videoPath : string | null = null
+    let imagePath : string | null = null
+    const video = formData.get('video')
+    const image = formData.get('image')
+
     const title = getStringValue(formData,'title')
     const description = getStringValue(formData,'description')
     const gitUrl = getStringValue(formData,'gitUrl')
     const appUrl = getStringValue(formData,'appUrl')
     const content = getStringValue(formData,'content')
+  
+    if(video && video instanceof File && video.size > 0){
+        videoPath = uuidv4()
+        await UploadFile(video,videoPath)
+    }
 
-    const video = formData.get('video')
-    console.log(video)
+    if(image && image instanceof File && image.size > 0){
+        imagePath = uuidv4()
+        await UploadFile(image,imagePath)
+    }
     
     try{
         await connect()
         const userId = await getUserId()
 
         if(userId){
-            const article = await prisma.article.create({
+            await prisma.article.create({
                 data:{
                     title: title,
                     description: description,
@@ -56,13 +69,16 @@ export async function saveArticle(formData : FormData) {
                     contents: content,
                     public: false,
                     userId: userId,
+                    videoPath: videoPath,
+                    imagePath: imagePath,
                 }
-            }) 
+            })
         }
-
+        console.log('success')
+    
     }catch(err){
         console.log(err)
-        return err
+       
     }finally{
         await prisma.$disconnect()
     }
@@ -70,18 +86,33 @@ export async function saveArticle(formData : FormData) {
 }
 
 export async function publicArticle(formData : FormData){
+    console.log(formData)
+    let videoPath : string | null = null
+    let imagePath : string | null = null
     const title = getStringValue(formData,'title')
     const description = getStringValue(formData,'description')
     const gitUrl = getStringValue(formData,'gitUrl')
     const appUrl = getStringValue(formData,'appUrl')
     const content = getStringValue(formData,'content')
+    const video = formData.get('video')
+    const image = formData.get('image')
 
+    if(video && video instanceof File && video.size > 0){
+        videoPath = uuidv4()
+        await UploadFile(video,videoPath)
+    }
+
+    if(image && image instanceof File && image.size > 0){
+        imagePath = uuidv4()
+        await UploadFile(image,imagePath)
+    }
+    
     try{
         await connect()
         const userId = await getUserId()
 
         if(userId){
-            const article = await prisma.article.create({
+            await prisma.article.create({
                 data:{
                     title: title,
                     description: description,
@@ -90,16 +121,18 @@ export async function publicArticle(formData : FormData){
                     contents: content,
                     public: true,
                     userId: userId,
+                    videoPath: videoPath,
+                    imagePath: imagePath,
                 }
-            }) 
+            })
         }
-
+     console.log('success')
     }catch(err){
-        return err
+        console.log(err)
+        
     }finally{
         await prisma.$disconnect()
-    }
-   
+    }  
 }
 
 

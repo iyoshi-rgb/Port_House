@@ -30,12 +30,17 @@ export const Form = () => {
   const {
     register,
     watch,
+    handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ defaultValues });
   const formData = watch();
 
   const handleSwitchMode = () => {
     setIsPreviewMode(!isPreviewMode);
+  };
+
+  const onSubmit = (formData: FormData) => {
+    console.log(formData);
   };
 
   return (
@@ -67,7 +72,10 @@ export const Form = () => {
       {isPreviewMode ? (
         <Preview formData={formData} />
       ) : (
-        <form className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
           <div className="col-span-1 space-y-3">
             <FileInput
               label="PR VIDEO"

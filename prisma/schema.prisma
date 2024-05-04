@@ -45,6 +45,8 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
+  gitAccount    String?
+  xAccount      String?
   accounts      Account[]
   purchases     Purchase[] // 購入履歴へのリレーション
   sessions      Session[]
