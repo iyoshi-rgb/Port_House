@@ -6,7 +6,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const id: string = params.id;
 
   return (
-    <div className="bg-slate-200 min-h-screen">
+    <div>
       <Header />
       <UserProfile id={id} />
     </div>

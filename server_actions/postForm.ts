@@ -34,10 +34,10 @@ function getStringValue(formData : FormData, fieldName : string): string | null{
 
 export async function saveArticle(formData : FormData) {
     console.log(formData)
-    let videoPath : string | null = null
-    let imagePath : string | null = null
-    const video = formData.get('video')
-    const image = formData.get('image')
+     let videoPath : string | null = null
+     let imagePath : string | null = null
+     const video = formData.get('video')
+     const image = formData.get('image')
 
     const title = getStringValue(formData,'title')
     const description = getStringValue(formData,'description')
@@ -45,7 +45,7 @@ export async function saveArticle(formData : FormData) {
     const appUrl = getStringValue(formData,'appUrl')
     const content = getStringValue(formData,'content')
   
-    if(video && video instanceof File && video.size > 0){
+     if(video && video instanceof File && video.size > 0){
         videoPath = uuidv4()
         await UploadFile(video,videoPath)
     }
@@ -74,7 +74,7 @@ export async function saveArticle(formData : FormData) {
                 }
             })
         }
-        console.log('success')
+     
     
     }catch(err){
         console.log(err)
@@ -126,7 +126,7 @@ export async function publicArticle(formData : FormData){
                 }
             })
         }
-     console.log('success')
+    
     }catch(err){
        return err        
     }finally{

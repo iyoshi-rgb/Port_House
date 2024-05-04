@@ -11,6 +11,8 @@ import { TextAreaInput } from "./form/textarea_input";
 import { SubmitButtons } from "./form/submit_button";
 import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
+import { useRouter } from "next/navigation";
+import { Loading } from "@/components/Loadng";
 
 const defaultValues: FormData = {
   image: null,
@@ -26,11 +28,13 @@ export const Form = () => {
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
   const [imageName, setImageName] = useState<string>("");
   const [videoName, setVideoName] = useState<string>("");
+  const [isloading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const {
     register,
     watch,
-    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({ defaultValues });
   const formData = watch();
@@ -39,12 +43,19 @@ export const Form = () => {
     setIsPreviewMode(!isPreviewMode);
   };
 
-  const onSubmit = (formData: FormData) => {
-    console.log(formData);
+  const formReset = () => {
+    reset();
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/");
+    }, 5000);
   };
 
   return (
     <div className="container mx-auto  px-4 py-8 sm:px-6 lg:px-8">
+      {isloading && <Loading />}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3">
         <div className="flex justify-between items-center pb-5">
           <h1 className="text-3xl font-bold">Create New Content</h1>
@@ -72,10 +83,7 @@ export const Form = () => {
       {isPreviewMode ? (
         <Preview formData={formData} />
       ) : (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <form className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="col-span-1 space-y-3">
             <FileInput
               label="PR VIDEO"
@@ -145,7 +153,7 @@ export const Form = () => {
               errors={errors}
             />
           </div>
-          <SubmitButtons />
+          <SubmitButtons formReset={formReset} />
         </form>
       )}
     </div>
