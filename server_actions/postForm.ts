@@ -15,7 +15,7 @@ async function UploadFile(file : File, filepath : string){
   if (error) {
     return error;
   }else{
-    return 'success';
+    console.log(data)
   }
 }
 
@@ -46,13 +46,17 @@ export async function saveArticle(formData : FormData) {
     const content = getStringValue(formData,'content')
   
      if(video && video instanceof File && video.size > 0){
+        console.log(video)
         videoPath = uuidv4()
         await UploadFile(video,videoPath)
+        console.log('video finishaed')
     }
 
     if(image && image instanceof File && image.size > 0){
+        console.log(image)
         imagePath = uuidv4()
         await UploadFile(image,imagePath)
+        console.log('image finishaed')
     }
     
     try{
@@ -60,7 +64,7 @@ export async function saveArticle(formData : FormData) {
         const userId = await getUserId()
 
         if(userId){
-            await prisma.article.create({
+             await prisma.article.create({
                 data:{
                     title: title,
                     description: description,
@@ -74,11 +78,11 @@ export async function saveArticle(formData : FormData) {
                 }
             })
         }
-     
+     return 'success'
     
     }catch(err){
         console.log(err)
-       
+        return null      
     }finally{
         await prisma.$disconnect()
     }
@@ -99,10 +103,13 @@ export async function publicArticle(formData : FormData){
 
     if(video && video instanceof File && video.size > 0){
         videoPath = uuidv4()
+        console.log(videoPath);
         await UploadFile(video,videoPath)
     }
 
     if(image && image instanceof File && image.size > 0){
+        console.log(image)
+        console.log(imagePath);
         imagePath = uuidv4()
         await UploadFile(image,imagePath)
     }
@@ -126,9 +133,9 @@ export async function publicArticle(formData : FormData){
                 }
             })
         }
-    
+    return 'success'
     }catch(err){
-       return err        
+       return null        
     }finally{
         await prisma.$disconnect()
     }  

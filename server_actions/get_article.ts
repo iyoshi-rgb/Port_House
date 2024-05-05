@@ -1,30 +1,34 @@
+'use server';
 import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
+import { Turret_Road } from "next/font/google";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export const GET = async (req: Request, res: NextResponse) => {
+export async function getWorks(id : string){
+  
     try {
         await connect();
         const articles = await prisma.article.findMany({
             where: {
-                public : true,
-            },
+                userId: id,
+                },
             select: {
-                title : true,
-                description : true,
-                imagePath : true,
+                id: true,
+                title: true,
                 createdat: true,
-                id : true,
+                public: true,
             }
-        });
-        return NextResponse.json({message: 'Success', articles},{status: 200});
+            });    
+        return articles;
     }catch(err){
-        return NextResponse.json({message: 'Error',err}, {status: 500})
+        console.log(err)
+        return null
 
     }finally{
         await prisma.$disconnect()
-
     }
-}
+};
+
+
