@@ -92,7 +92,7 @@ export const Preview: React.FC<Props> = ({ formData }) => {
                 href={formData.appUrl}
               >
                 <TbWorld className="h-5 w-5" />
-                App
+                Go App
               </Link>
             )}
           </div>
