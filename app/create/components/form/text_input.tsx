@@ -20,12 +20,13 @@ export const TextInput: React.FC<TextInputProps> = ({
 }) => {
   return (
     <>
-      <InputGroup size="sm">
+      <InputGroup size="lg">
         {icon && <InputLeftAddon>{icon}</InputLeftAddon>}
         <Input
           {...register(name)}
           placeholder={placeholder}
           variant={"outline"}
+          size="lg"
         />
       </InputGroup>
       {errors[name] && <p className="text-red-500">{errors[name].message}</p>}
