@@ -1,14 +1,15 @@
 import { Button, FormLabel, Switch } from "@chakra-ui/react";
 import { TbWorld } from "react-icons/tb";
-import { publicArticle, saveArticle } from "@/server_actions/postForm";
 import { FaRegSave } from "react-icons/fa";
 import { useState } from "react";
+import { UseFormRegister } from "react-hook-form";
+import { FormData } from "@/types/formData";
 
 type Props = {
-  formReset: () => void;
+  register: UseFormRegister<FormData>;
 };
 
-export const SubmitButtons: React.FC<Props> = ({ formReset }) => {
+export const SubmitButtons: React.FC<Props> = ({ register }) => {
   const [isPublicMode, setIsPublicMode] = useState<boolean>(false);
 
   const changeMode = () => {
@@ -18,13 +19,16 @@ export const SubmitButtons: React.FC<Props> = ({ formReset }) => {
   return (
     <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex justify-end gap-2 items-center">
       <FormLabel htmlFor="isDisabled">公開しますか?</FormLabel>
-      <Switch colorScheme="teal" size="lg" onChange={changeMode} />
+      <Switch
+        colorScheme="teal"
+        size="lg"
+        {...register("public")}
+        onChange={changeMode}
+      />
 
       {isPublicMode ? (
         <Button
           type="submit"
-          formAction={publicArticle}
-          onClick={formReset}
           leftIcon={<TbWorld />}
           colorScheme="teal"
           variant="outline"
@@ -34,8 +38,6 @@ export const SubmitButtons: React.FC<Props> = ({ formReset }) => {
       ) : (
         <Button
           type="submit"
-          formAction={saveArticle}
-          onClick={formReset}
           rightIcon={<FaRegSave />}
           colorScheme="teal"
           variant="solid"

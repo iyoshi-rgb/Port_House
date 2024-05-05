@@ -22,6 +22,7 @@ const defaultValues: FormData = {
   content: null,
   gitUrl: null,
   appUrl: null,
+  public: false,
 };
 
 export const Form = () => {
@@ -35,6 +36,7 @@ export const Form = () => {
     register,
     watch,
     reset,
+    handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ defaultValues });
   const formData = watch();
@@ -44,13 +46,18 @@ export const Form = () => {
   };
 
   const formReset = () => {
-    reset();
     setIsLoading(true);
 
     setTimeout(() => {
+      reset();
+      setImageName("");
+      setVideoName("");
       setIsLoading(false);
-      router.push("/");
-    }, 5000);
+    }, 10000);
+  };
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
   };
 
   return (
@@ -83,7 +90,10 @@ export const Form = () => {
       {isPreviewMode ? (
         <Preview formData={formData} />
       ) : (
-        <form className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <form
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="col-span-1 space-y-3">
             <FileInput
               label="PR VIDEO"
@@ -106,7 +116,7 @@ export const Form = () => {
               }
             />
           </div>
-          <div className="col-span-1 sm:col-span-2 space-y-4 ">
+          <div className="col-span-1 sm:col-span-2 space-y-5 pt-4">
             <div>
               <TextInput
                 name="title"
@@ -117,15 +127,15 @@ export const Form = () => {
               />
             </div>
             <div>
-              <TextInput
+              <TextAreaInput
                 name="description"
-                label="Description"
                 placeholder="Description"
+                rows={5}
                 register={register}
                 errors={errors}
               />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 py-5">
               <TextInput
                 name="gitUrl"
                 label="GitHub URL"
@@ -144,7 +154,7 @@ export const Form = () => {
               />
             </div>
           </div>
-          <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-3 space-y-2">
             <TextAreaInput
               name="content"
               placeholder="main content"
@@ -153,7 +163,7 @@ export const Form = () => {
               errors={errors}
             />
           </div>
-          <SubmitButtons formReset={formReset} />
+          <SubmitButtons register={register} />
         </form>
       )}
     </div>
