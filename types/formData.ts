@@ -1,5 +1,4 @@
 export type FormData = {
-  userId: string;
   title: string | null;
   description: string | null;
   contents: string | null;
