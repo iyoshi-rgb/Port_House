@@ -13,10 +13,11 @@ import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { Preview } from "./preview";
 
 async function UploadFile(file: File, filepath: string) {
   const supabase = createClient();
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("porthouse")
     .upload(filepath, file);
   if (error) {
@@ -75,8 +76,8 @@ interface Props {
 
 export const Form: React.FC<Props> = ({ user }) => {
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
-  const [imageName, setImageName] = useState<string>("");
-  const [videoName, setVideoName] = useState<string>("");
+  const [imageName, setImageName] = useState<string | null>(null);
+  const [videoName, setVideoName] = useState<string | null>(null);
   const [imagePath, setImagePath] = useState<string | null>(null);
   const [videoPath, setVideoPath] = useState<string | null>(null);
 
@@ -157,7 +158,7 @@ export const Form: React.FC<Props> = ({ user }) => {
     if (data.video && data.video[0] && videoPath !== null) {
       const file = data.video[0];
       const video_postPromise = new Promise((resolve, reject) =>
-        post_image(file, videoPath).then((res) => {
+        post_video(file, videoPath).then((res) => {
           if (res === true) {
             resolve("アップロード成功");
           } else {
@@ -247,7 +248,7 @@ export const Form: React.FC<Props> = ({ user }) => {
         </div>
       </div>
       {isPreviewMode ? (
-        <></>
+        <Preview formData={formData} />
       ) : (
         <form
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -261,7 +262,7 @@ export const Form: React.FC<Props> = ({ user }) => {
               register={register}
               fileName={videoName}
               onFileChange={(e) => {
-                setVideoName(e.target.files?.[0]?.name || "");
+                setVideoName(e.target.files?.[0]?.name || null);
                 setVideoPath(uuidv4());
               }}
             />
@@ -272,7 +273,7 @@ export const Form: React.FC<Props> = ({ user }) => {
               register={register}
               fileName={imageName}
               onFileChange={(e) => {
-                setImageName(e.target.files?.[0]?.name || "");
+                setImageName(e.target.files?.[0]?.name || null);
                 setImagePath(uuidv4());
               }}
             />
