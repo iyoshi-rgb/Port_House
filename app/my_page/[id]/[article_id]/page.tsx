@@ -1,5 +1,6 @@
 import React from "react";
 import EditForm from "./components/edit_form";
+import { Header } from "@/components/Header";
 
 async function fetchArticle(id: string) {
   const Url = process.env.NEXT_PUBLIC_API_URL;
@@ -32,6 +33,7 @@ const Page = async ({ params }: { params: { article_id: string } }) => {
 
   return (
     <div>
+      <Header />
       <EditForm article={article} />
     </div>
   );

@@ -55,3 +55,32 @@ export const POST = async (req: Request, res: NextResponse) => {
 
     }
 }
+
+export const PUT = async (req: Request, res: NextResponse) => {
+    const {id,title,description,gitUrl,appUrl,content,published,videoPath,imagePath} = await req.json()
+    try {
+        await connect();
+        const articles = await prisma.article.update({
+            where: {
+                id : id,
+            },
+            data:{
+                title: title,
+                description: description,
+                gitUrl: gitUrl,
+                appUrl: appUrl,
+                contents: content,
+                public: published,
+                videoPath: videoPath,
+                imagePath: imagePath,
+            }
+        });
+        return NextResponse.json(true,{status: 201});
+    }catch(err){
+        return NextResponse.json(false, {status: 500})
+
+    }finally{
+        await prisma.$disconnect()
+
+    }
+}

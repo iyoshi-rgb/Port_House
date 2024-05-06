@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Button, useToast } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { Article } from "../page";
@@ -13,6 +13,50 @@ import { SubmitButtons } from "@/app/create/components/form/submit_button";
 import { FormData } from "@/types/formData";
 import { TfiPencil } from "react-icons/tfi";
 import { EditPreview } from "./edit_preview";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+
+async function UploadFile(file: File, filepath: string) {
+  const supabase = createClient();
+  const { error } = await supabase.storage
+    .from("porthouse")
+    .upload(filepath, file);
+  if (error) {
+    console.log(error);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+async function updateArticle(
+  id: string,
+  data: FormData,
+  imagePath: string | null,
+  videoPath: string | null
+) {
+  const { title, description, contents, gitUrl, appUrl, published } = data;
+  const Url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${Url}/api/article/`, {
+    method: "PUT",
+    body: JSON.stringify({
+      id,
+      title,
+      description,
+      contents,
+      gitUrl,
+      appUrl,
+      published,
+      imagePath,
+      videoPath,
+    }),
+    headers: {
+      "Contnt-type": "application/json",
+    },
+  });
+  const result = await res.json();
+  return result;
+}
 
 interface Props {
   article: Article;
@@ -26,7 +70,9 @@ const EditForm: React.FC<Props> = ({ article }) => {
   const [imagePath, setImagePath] = useState<string | null>(article.imagePath);
   const [videoPath, setVideoPath] = useState<string | null>(article.videoPath);
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
-  const [formChanged, setFormChanged] = useState(false);
+
+  const toast = useToast();
+  const router = useRouter();
 
   const handleSwitchMode = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -51,8 +97,128 @@ const EditForm: React.FC<Props> = ({ article }) => {
   } = useForm<FormData>({ defaultValues });
   const formData = watch();
 
-  const onSubmit = (data: FormData) => {
+  const update_Form = async (data: FormData) => {
+    const res = await updateArticle(article.id, data, imagePath, videoPath);
+    return res;
+  };
+
+  //写真保存
+  const update_image = async (file: File, path: string) => {
+    const res = await UploadFile(file, path);
+    return res;
+  };
+
+  //動画保存
+  const update_video = async (file: File, path: string) => {
+    const res = await UploadFile(file, path);
+    return res;
+  };
+  const onSubmit = async (data: FormData) => {
     console.log(data);
+
+    if (
+      data.image &&
+      data.image[0] &&
+      imagePath !== null &&
+      imagePath !== article.imagePath
+    ) {
+      const file = data.image[0];
+      const image_updatePromise = new Promise((resolve, reject) =>
+        update_image(file, imagePath).then((res) => {
+          if (res === true) {
+            resolve("アップデート成功");
+          } else {
+            reject(new Error("アップデートできませんでした"));
+          }
+        })
+      );
+      toast.promise(image_updatePromise, {
+        success: {
+          title: "アップデート成功",
+          description: "写真をアップデートしました",
+          position: "top",
+        },
+        error: {
+          title: "アップデート失敗",
+          description: "再度やり直してください",
+          position: "top",
+        },
+        loading: {
+          title: "アップデート中",
+          description: "写真をアップデートしています",
+          position: "top",
+        },
+      });
+    }
+    if (
+      data.video &&
+      data.video[0] &&
+      videoPath !== null &&
+      videoPath !== article.videoPath
+    ) {
+      const file = data.video[0];
+      const video_updatePromise = new Promise((resolve, reject) =>
+        update_video(file, videoPath).then((res) => {
+          if (res === true) {
+            resolve("アップデート成功");
+          } else {
+            reject(new Error("アップデートできませんでした"));
+          }
+        })
+      );
+      toast.promise(video_updatePromise, {
+        success: {
+          title: "アップデート成功",
+          description: "ビデオをアップデートしました",
+          position: "top",
+        },
+        error: {
+          title: "アップデート失敗",
+          description: "再度やり直してください",
+          position: "top",
+        },
+        loading: {
+          title: "アップデート中",
+          description: "ビデオをアップデートしています",
+          position: "top",
+        },
+      });
+    }
+
+    const updatePromise = new Promise((resolve, reject) =>
+      update_Form(data).then((res) => {
+        if (res === true) {
+          resolve("アップデート成功");
+        } else {
+          reject(new Error("アップデートできませんでした"));
+        }
+      })
+    );
+    toast.promise(updatePromise, {
+      success: {
+        title: "アップデート成功",
+        description: "記事をアップデートしました",
+        position: "top",
+      },
+      error: {
+        title: "アップデート失敗",
+        description: "再度やり直してください",
+        position: "top",
+      },
+      loading: {
+        title: "アップデート中",
+        description: "投稿をアップデートしています",
+        position: "top",
+      },
+    });
+
+    updatePromise
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -165,7 +331,7 @@ const EditForm: React.FC<Props> = ({ article }) => {
               errors={errors}
             />
           </div>
-          {!isDirty && <SubmitButtons register={register} />}
+          {isDirty && <SubmitButtons register={register} />}
         </form>
       )}
     </div>

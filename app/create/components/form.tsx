@@ -145,7 +145,7 @@ export const Form: React.FC<Props> = ({ user }) => {
         },
         error: {
           title: "アップロード失敗",
-          description: "もう一度やり直してください",
+          description: "再度やり直してください",
           position: "top",
         },
         loading: {
@@ -174,7 +174,7 @@ export const Form: React.FC<Props> = ({ user }) => {
         },
         error: {
           title: "アップロード失敗",
-          description: "もう一度やり直してください",
+          description: "再度やり直してください",
           position: "top",
         },
         loading: {
@@ -202,7 +202,7 @@ export const Form: React.FC<Props> = ({ user }) => {
       },
       error: {
         title: "作成失敗",
-        description: "もう一度やり直してください",
+        description: "再度やり直してください",
         position: "top",
       },
       loading: {
