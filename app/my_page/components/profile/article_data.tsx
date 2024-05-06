@@ -1,8 +1,8 @@
 import { getWorks } from "@/server_actions/get_article";
 import Link from "next/link";
 import React from "react";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { TfiPencil } from "react-icons/tfi";
+import DeleteButton from "./delete_button";
 
 interface Props {
   id: string;
@@ -71,12 +71,11 @@ const DraftArticleData: React.FC<DraftArticleProps> = ({
                     </p>
                   )}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                   <Link href={`/my_page/${id}/${draft.id}`}>
                     <TfiPencil className="h-6 w-6 " />
                   </Link>
-
-                  <RiDeleteBin5Line className="h-6 w-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-50" />
+                  <DeleteButton id={draft.id} />
                 </div>
               </div>
             );
@@ -127,12 +126,12 @@ const PublishArticleData: React.FC<PublishArticleProps> = ({
                     </p>
                   )}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                   <Link href={`/my_page/${id}/${publish.id}`}>
                     <TfiPencil className="h-6 w-6 " />
                   </Link>
 
-                  <RiDeleteBin5Line className="h-6 w-6 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-50" />
+                  <DeleteButton id={publish.id} />
                 </div>
               </div>
             );

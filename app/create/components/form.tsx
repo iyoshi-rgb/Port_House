@@ -11,31 +11,47 @@ import { TextAreaInput } from "./form/textarea_input";
 import { SubmitButtons } from "./form/submit_button";
 import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
-import { useRouter } from "next/navigation";
-import { Loading } from "@/components/Loadng";
 
-const defaultValues: FormData = {
-  image: null,
-  video: null,
-  title: null,
-  description: null,
-  content: null,
-  gitUrl: null,
-  appUrl: null,
-  public: false,
-};
+async function postArticle(data: FormData) {
+  console.log(data);
+  {
+    /*const Url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${Url}/api/article/`, {
+    method: "POST",
+  
+    headers: {
+      "Contnt-type": "application/json",
+    },
+  });
+  const result = await res.json();
+return result;*/
+  }
+}
 
-export const Form = () => {
+interface Props {
+  user: string;
+}
+
+export const Form: React.FC<Props> = ({ user }) => {
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
   const [imageName, setImageName] = useState<string>("");
   const [videoName, setVideoName] = useState<string>("");
-  const [isloading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
+  const defaultValues: FormData = {
+    userId: user,
+    image: null,
+    video: null,
+    title: null,
+    description: null,
+    contents: null,
+    gitUrl: null,
+    appUrl: null,
+    published: false,
+  };
 
   const {
     register,
     watch,
-    reset,
+
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ defaultValues });
@@ -45,24 +61,13 @@ export const Form = () => {
     setIsPreviewMode(!isPreviewMode);
   };
 
-  const formReset = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      reset();
-      setImageName("");
-      setVideoName("");
-      setIsLoading(false);
-    }, 10000);
-  };
-
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     console.log(data);
+    const res = await postArticle(data);
   };
 
   return (
     <div className="container mx-auto  px-4 py-8 sm:px-6 lg:px-8">
-      {isloading && <Loading />}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3">
         <div className="flex justify-between items-center pb-5">
           <h1 className="text-3xl font-bold">Create New Content</h1>
@@ -156,7 +161,7 @@ export const Form = () => {
           </div>
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 space-y-2">
             <TextAreaInput
-              name="content"
+              name="contents"
               placeholder="main content"
               rows={8}
               register={register}
