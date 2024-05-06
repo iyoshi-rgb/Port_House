@@ -20,9 +20,10 @@ async function UploadFile(file: File, filepath: string) {
     .from("porthouse")
     .upload(filepath, file);
   if (error) {
-    return error;
+    console.log(error);
+    return false;
   } else {
-    console.log(data);
+    return true;
   }
 }
 
@@ -105,23 +106,90 @@ export const Form: React.FC<Props> = ({ user }) => {
   const handleSwitchMode = () => {
     setIsPreviewMode(!isPreviewMode);
   };
+  //投稿
+  const post_Form = async (data: FormData) => {
+    const res = await postArticle(data, user, imagePath, videoPath);
+    return res;
+  };
+
+  //写真保存
+  const post_image = async (file: File, path: string) => {
+    const res = await UploadFile(file, path);
+    return res;
+  };
+
+  //動画保存
+  const post_video = async (file: File, path: string) => {
+    const res = await UploadFile(file, path);
+    return res;
+  };
 
   const onSubmit = async (data: FormData) => {
     if (data.image && data.image[0] && imagePath !== null) {
       const file = data.image[0];
-      await UploadFile(file, imagePath);
+      const image_postPromise = new Promise((resolve, reject) =>
+        post_image(file, imagePath).then((res) => {
+          if (res === true) {
+            resolve("アップロード成功");
+          } else {
+            reject(new Error("アップロードできませんでした"));
+          }
+        })
+      );
+      toast.promise(image_postPromise, {
+        success: {
+          title: "アップロード成功",
+          description: "写真をアップロードしました",
+          position: "top",
+        },
+        error: {
+          title: "アップロード失敗",
+          description: "もう一度やり直してください",
+          position: "top",
+        },
+        loading: {
+          title: "アップロード中",
+          description: "写真をアップロードしています",
+          position: "top",
+        },
+      });
     }
     if (data.video && data.video[0] && videoPath !== null) {
       const file = data.video[0];
-      await UploadFile(file, videoPath);
+      const video_postPromise = new Promise((resolve, reject) =>
+        post_image(file, videoPath).then((res) => {
+          if (res === true) {
+            resolve("アップロード成功");
+          } else {
+            reject(new Error("アップロードできませんでした"));
+          }
+        })
+      );
+      toast.promise(video_postPromise, {
+        success: {
+          title: "アップロード成功",
+          description: "ビデオをアップロードしました",
+          position: "top",
+        },
+        error: {
+          title: "アップロード失敗",
+          description: "もう一度やり直してください",
+          position: "top",
+        },
+        loading: {
+          title: "アップロード中",
+          description: "ビデオをアップロードしています",
+          position: "top",
+        },
+      });
     }
 
     const postPromise = new Promise((resolve, reject) =>
       post_Form(data).then((res) => {
         if (res === true) {
-          resolve("削除成功");
+          resolve("作成成功");
         } else {
-          reject(new Error("削除できませんでした"));
+          reject(new Error("作成できませんでした"));
         }
       })
     );
@@ -150,11 +218,6 @@ export const Form: React.FC<Props> = ({ user }) => {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const post_Form = async (data: FormData) => {
-    const res = await postArticle(data, user, imagePath, videoPath);
-    return res;
   };
 
   return (
