@@ -58,7 +58,7 @@ export const POST = async (req: Request, res: NextResponse) => {
 }
 
 export const PUT = async (req: Request, res: NextResponse) => {
-    const {id,title,description,gitUrl,appUrl,content,published,videoPath,imagePath} = await req.json()
+    const {id,title,description,gitUrl,appUrl,contents,published,videoPath,imagePath} = await req.json()
     try {
         await connect();
         const articles = await prisma.article.update({
@@ -70,7 +70,7 @@ export const PUT = async (req: Request, res: NextResponse) => {
                 description: description,
                 gitUrl: gitUrl,
                 appUrl: appUrl,
-                contents: content,
+                contents: contents,
                 public: published,
                 videoPath: videoPath,
                 imagePath: imagePath,
