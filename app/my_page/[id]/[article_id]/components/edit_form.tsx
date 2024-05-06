@@ -13,7 +13,6 @@ import { SubmitButtons } from "@/app/create/components/form/submit_button";
 import { FormData } from "@/types/formData";
 import { TfiPencil } from "react-icons/tfi";
 import { EditPreview } from "./edit_preview";
-import { isEqual, pickBy } from "lodash";
 
 interface Props {
   article: Article;
@@ -48,28 +47,12 @@ const EditForm: React.FC<Props> = ({ article }) => {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormData>({ defaultValues });
   const formData = watch();
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      if (!isEqual(value, defaultValues)) {
-        setFormChanged(true);
-      } else {
-        setFormChanged(false);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, defaultValues]);
-
   const onSubmit = (data: FormData) => {
     console.log(data);
-    const changedData = pickBy(
-      data,
-      (value, key) => !isEqual(value, defaultValues[key as keyof FormData])
-    );
-    console.log(changedData);
   };
 
   return (
@@ -182,7 +165,7 @@ const EditForm: React.FC<Props> = ({ article }) => {
               errors={errors}
             />
           </div>
-          {formChanged && <SubmitButtons register={register} />}
+          {!isDirty && <SubmitButtons register={register} />}
         </form>
       )}
     </div>
