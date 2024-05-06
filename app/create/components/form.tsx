@@ -13,7 +13,17 @@ import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
 
 async function postArticle(data: FormData) {
-  console.log(data);
+  const {
+    title,
+    description,
+    contents,
+    gitUrl,
+    appUrl,
+    published,
+    userId,
+    image,
+    video,
+  } = data;
   {
     /*const Url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${Url}/api/article/`, {

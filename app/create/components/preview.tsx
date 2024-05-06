@@ -115,11 +115,11 @@ export const Preview: React.FC<Props> = ({ formData }) => {
           <div className="max-w-[800px] mx-auto space-y-6">
             <div className="space-y-4">
               <h3 className="text-2xl font-bold">詳細</h3>
-              {formData.content ? (
+              {formData.contents ? (
                 <p
                   className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400"
                   dangerouslySetInnerHTML={{
-                    __html: formData.content.replace(/\n/g, "<br>"),
+                    __html: formData.contents.replace(/\n/g, "<br>"),
                   }}
                 ></p>
               ) : (

@@ -39,12 +39,21 @@ const DeleteButton: React.FC<Props> = ({ id }) => {
       })
     );
     toast.promise(deletePromise, {
-      success: { title: "削除成功", description: "投稿を削除しました" },
+      success: {
+        title: "削除成功",
+        description: "投稿を削除しました",
+        position: "top",
+      },
       error: {
         title: "削除失敗",
         description: "もう一度やり直してください",
+        position: "top",
       },
-      loading: { title: "削除中", description: "投稿を削除しています" },
+      loading: {
+        title: "削除中",
+        description: "投稿を削除しています",
+        position: "top",
+      },
     });
 
     deletePromise
