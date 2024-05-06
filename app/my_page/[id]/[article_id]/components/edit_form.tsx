@@ -69,6 +69,8 @@ const EditForm: React.FC<Props> = ({ article }) => {
   const [videoName, setVideoName] = useState<string | null>(article.videoPath);
   const [imagePath, setImagePath] = useState<string | null>(article.imagePath);
   const [videoPath, setVideoPath] = useState<string | null>(article.videoPath);
+  const [imageChande, setImageChange] = useState<boolean>(false);
+  const [videoChande, setVideoChange] = useState<boolean>(false);
   const [isPreviewMode, setIsPreviewMode] = useState<boolean>(false);
 
   const toast = useToast();
@@ -270,6 +272,7 @@ const EditForm: React.FC<Props> = ({ article }) => {
               onFileChange={(e) => {
                 setVideoName(e.target.files?.[0]?.name || "");
                 setVideoPath(uuidv4());
+                setVideoChange(true);
               }}
             />
             <FileInput
@@ -281,6 +284,7 @@ const EditForm: React.FC<Props> = ({ article }) => {
               onFileChange={(e) => {
                 setImageName(e.target.files?.[0]?.name || "");
                 setImagePath(uuidv4());
+                setImageChange(true);
               }}
             />
           </div>
@@ -331,7 +335,9 @@ const EditForm: React.FC<Props> = ({ article }) => {
               errors={errors}
             />
           </div>
-          {isDirty && <SubmitButtons register={register} />}
+          {(isDirty || imageChande || videoChande) && (
+            <SubmitButtons register={register} />
+          )}
         </form>
       )}
     </div>

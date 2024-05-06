@@ -66,14 +66,21 @@ const DeleteButton: React.FC<Props> = ({ id }) => {
   }
 
   return (
-    <IconButton
-      icon={<RiDeleteBin5Line />}
-      variant={"ghost"}
-      aria-label="Delete"
-      fontSize={"25px"}
-      colorScheme="red"
-      onClick={onClick}
-    />
+    <div className="relative group">
+      <IconButton
+        icon={<RiDeleteBin5Line />}
+        variant={"ghost"}
+        aria-label="Delete"
+        fontSize={"25px"}
+        colorScheme="red"
+        onClick={onClick}
+        className="relative group"
+      >
+        <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full scale-0 group-hover:scale-100  text-red-400 px-2 text-xs">
+          削除
+        </span>
+      </IconButton>
+    </div>
   );
 };
 

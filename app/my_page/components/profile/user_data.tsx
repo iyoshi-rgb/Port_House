@@ -1,4 +1,5 @@
 import { Avatar, Button } from "@chakra-ui/react";
+import GitLab from "next-auth/providers/gitlab";
 import Link from "next/link";
 import React from "react";
 import { FaXTwitter } from "react-icons/fa6";
@@ -42,17 +43,21 @@ export const UserData: React.FC<Props> = async ({ id }) => {
         <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
       </div>
       <div className="flex gap-4 ">
-        <Link href="#">
-          <LuGithub className="h-6 w-6 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" />
-        </Link>
-        <Link href="#">
-          <FaXTwitter className="h-6 w-6 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" />
-        </Link>
+        {user.gitAccount && (
+          <Link href={user.gitAccount} target="_blank">
+            <LuGithub className="h-6 w-6 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" />
+          </Link>
+        )}
+        {user.xAccount && (
+          <Link href={user.xAccount} target="_blank">
+            <FaXTwitter className="h-6 w-6 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" />
+          </Link>
+        )}
       </div>
       <div>
-        <Button rightIcon={<TfiPencil />} colorScheme="teal" variant="ghost">
+        {/*<Button rightIcon={<TfiPencil />} colorScheme="teal" variant="ghost">
           編集
-        </Button>
+    </Button>*/}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export const GET = async (req: Request, res: NextResponse) => {
                 imagePath : true,
                 createdat: true,
                 id : true,
+                userId: true,
             }
         });
         return NextResponse.json({message: 'Success', articles},{status: 200});
