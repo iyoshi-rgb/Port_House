@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import { IoMdSearch } from "react-icons/io";
 import { TfiPencil } from "react-icons/tfi";
 import { FileInput } from "./form/file_input";
@@ -12,6 +12,7 @@ import { SubmitButtons } from "./form/submit_button";
 import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 async function UploadFile(file: File, filepath: string) {
   const supabase = createClient();
@@ -78,6 +79,9 @@ export const Form: React.FC<Props> = ({ user }) => {
   const [imagePath, setImagePath] = useState<string | null>(null);
   const [videoPath, setVideoPath] = useState<string | null>(null);
 
+  const toast = useToast();
+  const router = useRouter();
+
   const defaultValues: FormData = {
     image: null,
     video: null,
@@ -111,7 +115,46 @@ export const Form: React.FC<Props> = ({ user }) => {
       const file = data.video[0];
       await UploadFile(file, videoPath);
     }
+
+    const postPromise = new Promise((resolve, reject) =>
+      post_Form(data).then((res) => {
+        if (res === true) {
+          resolve("削除成功");
+        } else {
+          reject(new Error("削除できませんでした"));
+        }
+      })
+    );
+    toast.promise(postPromise, {
+      success: {
+        title: "作成成功",
+        description: "記事を作成しました",
+        position: "top",
+      },
+      error: {
+        title: "作成失敗",
+        description: "もう一度やり直してください",
+        position: "top",
+      },
+      loading: {
+        title: "作成中",
+        description: "投稿を作成しています",
+        position: "top",
+      },
+    });
+
+    postPromise
+      .then(() => {
+        router.replace(`/my_page/${user}`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const post_Form = async (data: FormData) => {
     const res = await postArticle(data, user, imagePath, videoPath);
+    return res;
   };
 
   return (
