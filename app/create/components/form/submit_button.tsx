@@ -22,7 +22,7 @@ export const SubmitButtons: React.FC<Props> = ({ register }) => {
       <Switch
         colorScheme="teal"
         size="lg"
-        {...register("public")}
+        {...register("published")}
         onChange={changeMode}
       />
 

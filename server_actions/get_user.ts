@@ -4,22 +4,20 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function getWorks(id : string){
+export async function getUser(id : string){
   
     try {
         await connect();
-        const articles = await prisma.article.findMany({
+        const user = await prisma.user.findMany({
             where: {
-                userId: id,
+                id: id,
                 },
             select: {
                 id: true,
-                title: true,
-                createdat: true,
-                public: true,
+               image: true,
             }
             });    
-        return articles;
+        return user[0];
     }catch(err){
         console.log(err)
         return null
@@ -28,5 +26,3 @@ export async function getWorks(id : string){
         await prisma.$disconnect()
     }
 };
-
-

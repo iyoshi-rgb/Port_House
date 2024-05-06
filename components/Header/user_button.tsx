@@ -1,31 +1,24 @@
 import React from "react";
 import {
   Avatar,
-  Button,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { GoPerson } from "react-icons/go";
 import { SlNote } from "react-icons/sl";
+import { getUser } from "@/server_actions/get_user";
 
-async function fetchUserData(id: any) {
-  const Url = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${Url}/api/my_page/${id}`, {
-    cache: "no-store", //SSR
-  });
-
-  const data = await res.json();
-
-  return data.user;
+interface User {
+  id: string;
+  image: string | null;
 }
 
 export const UserButton = async ({ id }: any) => {
-  const user = await fetchUserData(id);
+  const user: User | null = await getUser(id);
 
   if (user) {
     return (

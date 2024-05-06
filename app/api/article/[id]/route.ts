@@ -20,3 +20,20 @@ export const GET = async (req: Request, res: NextResponse) => {
 
     }
 }
+
+
+export const DELETE = async (req: Request, res: NextResponse) => {
+    const id = req.url.split("/article/")[1];
+    console.log(id)
+   try {
+        await connect();
+        const delete_article = await prisma.article.delete({where: {
+            id: id
+        }});
+        return  NextResponse.json(true,{status: 200});
+    }catch(err){
+        return  NextResponse.json(false,{status: 200});
+    }finally{
+        await prisma.$disconnect()
+    }
+}
