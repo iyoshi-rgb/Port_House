@@ -1,3 +1,4 @@
+import { SignIn } from "@/components/session_button";
 import { Button } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import React from "react";
@@ -13,14 +14,7 @@ const Page = () => {
             Sign in to your account
           </p>
         </div>
-        <Button
-          className="w-full"
-          variant="outline"
-          onClick={() => signIn("github")}
-        >
-          <FaGithub className="mr-2 h-5 w-5" />
-          Sign in with GitHub
-        </Button>
+        <SignIn />
       </div>
     </div>
   );
