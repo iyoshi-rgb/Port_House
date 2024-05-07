@@ -12,7 +12,7 @@ import { SubmitButtons } from "./form/submit_button";
 import { FaGithub, FaLink } from "react-icons/fa6";
 import { FormData } from "@/types/formData";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Preview } from "./preview";
 
 async function UploadFile(file: File, filepath: string) {
@@ -82,7 +82,6 @@ export const Form: React.FC<Props> = ({ user }) => {
   const [videoPath, setVideoPath] = useState<string | null>(null);
 
   const toast = useToast();
-  const router = useRouter();
 
   const defaultValues: FormData = {
     image: null,
@@ -214,7 +213,7 @@ export const Form: React.FC<Props> = ({ user }) => {
 
     postPromise
       .then(() => {
-        router.replace(`/my_page/${user}`);
+        redirect(`/my_page/${user}`);
       })
       .catch((error) => {
         console.log(error);
