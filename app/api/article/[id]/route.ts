@@ -1,5 +1,6 @@
 import { connect } from "@/prisma/prisma";
 import { PrismaClient } from "@prisma/client";
+import { redirect } from "next/dist/server/api-utils";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
@@ -35,6 +36,7 @@ export const DELETE = async (req: Request, res: NextResponse) => {
         return  NextResponse.json(false,{status: 200});
     }finally{
         await prisma.$disconnect()
+       
     }
 }
 

@@ -7,10 +7,11 @@ import { FormData } from "@/types/formData";
 
 type Props = {
   register: UseFormRegister<FormData>;
+  isPublic: boolean;
 };
 
-export const SubmitButtons: React.FC<Props> = ({ register }) => {
-  const [isPublicMode, setIsPublicMode] = useState<boolean>(false);
+export const SubmitButtons: React.FC<Props> = ({ register, isPublic }) => {
+  const [isPublicMode, setIsPublicMode] = useState<boolean>(isPublic);
 
   const changeMode = () => {
     setIsPublicMode(!isPublicMode);

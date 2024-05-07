@@ -336,7 +336,7 @@ const EditForm: React.FC<Props> = ({ article }) => {
             />
           </div>
           {(isDirty || imageChande || videoChande) && (
-            <SubmitButtons register={register} />
+            <SubmitButtons register={register} isPublic={formData.published} />
           )}
         </form>
       )}

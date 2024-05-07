@@ -325,7 +325,7 @@ export const Form: React.FC<Props> = ({ user }) => {
               errors={errors}
             />
           </div>
-          <SubmitButtons register={register} />
+          <SubmitButtons register={register} isPublic={formData.published} />
         </form>
       )}
     </div>
