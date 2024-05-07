@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![ロゴ　仮完成-7](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/1943a40a-8917-44be-86c8-e089ebbd5ca4)
 
-## Getting Started
+<br/>
 
-First, run the development server:
+## サービスの URL
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+https://port-house.vercel.app/
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+GitHub 認証で投稿・マイページを見ることが出来ますので、<br/>
+ぜひ自分の作品がある方は投稿してください。
+<br />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## サービスへの想い(作成の背景)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+先日にハッカソンの出場したとき（ちなみにその時の作品のレポジトリはこちらですhttps://github.com/iyoshi-rgb/MachiWatashi）に、チームメンバーや交流会で交流した人が「頑張ってアプリ作っても、だれにも使ってもらえない」という声をよく聞きました。<br/>
+そこで、成果物（ポートフォリオ）を投稿できるようなアプリケーションを作成することで、一人よりも多くの人に見てもらうことが出来るのではないかと思い作成しました。<br/>
+また、自身の勉強として、NextAuth,prisma,React Hook Form を使用してみたかったこともあり作成いたしました。
 
-## Learn More
+<br/>
 
-To learn more about Next.js, take a look at the following resources:
+## 機能一覧
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Top＆ログイン＆アカウント作成画画                                                                                                         | Home 画面                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| ![スクリーンショット 2024-04-01 162034](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/c31aa52f-72c3-41a8-a8f2-9dd801448187) | ![スクリーンショット 2024-04-01 162131](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/00499c83-c808-4d1d-b37b-4f817df78c15) |
+| Supabase の認証機能を用いて、ログイン、アカウント作成機能を実装しました。アカウント作成はメール認証です。                                 | 棒グラフによって、誰が何件アポイントメントを取得したかを表示しています。                                                                  |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+| Home 画面 2                                                                                                                               | List 画面                                                                                                                                    |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| ![スクリーンショット 2024-04-01 173751](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/7c7071fa-d515-45e2-aab7-29dbdf747296) | ![スクリーンショット 2024-04-01 165730](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/c195d032-c8ca-4bf0-ab6a-6594925d821b)    |
+| 各月の各メンバーの アポイントメント取得数/荷電数　を行い取得率を表示しています。                                                          | 左のアイコンから、編集、削除、電話番号の Copy、List への追加が出来ます。すでに誰かのリストに追加されてあるのは、一番右のアイコンが消えます。 |
 
-## Deploy on Vercel
+| 各メンバーの List 画面                                                                                                                    | メンバー一覧&追加画面                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| ![スクリーンショット 2024-04-01 162231](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/6dafc452-a800-402e-b6b0-471fb889c2e0) | ![スクリーンショット 2024-04-01 164206](https://github.com/iyoshi-rgb/sales_growth/assets/153269464/ddac521a-eaaa-4949-b2d4-a142f24aa9cd) |
+| 各メンバーの List に追加されたデータだけを表示します。一番右のアイコンで各メンバーの List から外すことが出来ます                          | メンバー一覧の表示、メンバーの追加・削除を行えます。                                                                                      |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<br />
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 使用技術
+
+| Category       | Technology Stack                         |
+| -------------- | ---------------------------------------- |
+| Frontend       | TypeScript, Next.js, Chakra-ui, tailwind |
+| Backend        | Supabase                                 |
+| Infrastructure | Vercel                                   |
+| Database       | Supabase                                 |
+| etc..          | Prisma,NextAuth                          |
+
+<br/>
+
+## 挑戦&苦労&GoodPoint
+
+- 挑戦：Prisma と NextAuth の使用に挑戦しました。また、今まで Next を使っていましたが、api を使用していなかったので api を作って使用したことと、サーバーアクションも使用してみました。
+
+- 苦労：NextAuth に認証チェックを middleware で行いたかったのですが、認証しているのにチェックに引っかかったりした。（解決できず、該当ページで session を取得してきている）
+
+- よかったこと：前回までは、型エラーが出たら any で終わらしていましたが、今回はおそらく any を使わず、ちゃんと定義したこと。
+- サーバコンポネント、クライアントコンポネントの設計を前回よりもうまくでき、効率的に開発を進められたこと。
+- サーバーアクションや api,middleware など、自分が触ったことない部分も触れたこと。
+- Supabase のストレージを使って、画像や動画の取り扱いが出来たこと。
+  <br/>
+
+## 今後の展望(サービス＆個人)
+
+- 画面遷移が遅く感じるので、preload パターンなどで、遷移を早める方法を検討すること。
+
+- 投稿主はわかるが、その人の情報を見れないので、その人のページに飛べるようにする。
+- 細かい詳細もかけるような Form を考える
+- middleware で認証チェックできるようにし、楽に認証チェックを行う
+- layout.tsx の活用　（前回同様）
