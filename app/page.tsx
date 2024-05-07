@@ -1,5 +1,5 @@
 import { Header } from "@/components/Header";
-import { Card } from "./components/Card";
+import { Card } from "./_components/card_container";
 
 export default function Home() {
   return (

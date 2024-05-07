@@ -22,6 +22,7 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       return session;
     },
+    
   },
 };
 

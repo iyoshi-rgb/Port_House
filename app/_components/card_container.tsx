@@ -1,7 +1,6 @@
 import React from "react";
 import Noarticle from "@/components/no_article";
-import { CardGetUser } from "@/server_actions/get_user";
-import CardList from "./cardList";
+import Card from "./card";
 
 export interface Articles {
   title: string | null;
@@ -21,9 +20,8 @@ async function fetchAllArticles() {
   return data.articles;
 }
 
-export const Card = async () => {
+export const CardContainer = async () => {
   const articles: Articles[] | null = await fetchAllArticles();
-  console.log("articles", articles);
 
   if (!articles || articles.length === 0) {
     return (
@@ -35,7 +33,7 @@ export const Card = async () => {
     return (
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-6 py-12 md:py-16 lg:py-20">
         {articles.map((article) => {
-          return <CardList data={article} key={article.id} />;
+          return <Card data={article} key={article.id} />;
         })}
         ;
       </section>

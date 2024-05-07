@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoMdImages } from "react-icons/io";
-import { Articles } from "./Card";
+import { Articles } from "./card_container";
 import { createClient } from "@/utils/supabase/server";
 import { CardGetUser } from "@/server_actions/get_user";
 import { Avatar } from "@chakra-ui/react";
@@ -28,11 +28,9 @@ function getImageUrl(path: string | null) {
   }
 }
 
-const CardList: React.FC<Props> = async ({ data }) => {
-  console.log("data", data);
+const Card: React.FC<Props> = async ({ data }) => {
   const url = getImageUrl(data.imagePath);
   const user: User | null = await CardGetUser(data.userId);
-  console.log(user);
 
   return (
     <div
@@ -84,4 +82,4 @@ const CardList: React.FC<Props> = async ({ data }) => {
   );
 };
 
-export default CardList;
+export default Card;
