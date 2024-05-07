@@ -33,9 +33,12 @@ export const CardContainer = async () => {
     return (
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-6 py-12 md:py-16 lg:py-20">
         {articles.map((article) => {
-          return <Card data={article} key={article.id} />;
+          return (
+            <>
+              <Card data={article} key={article.id} />
+            </>
+          );
         })}
-        ;
       </section>
     );
   }
