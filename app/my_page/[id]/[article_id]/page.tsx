@@ -1,17 +1,15 @@
-import React from "react";
+import React, { cache } from "react";
 import EditForm from "./components/edit_form";
 import { Header } from "@/components/Header";
 
-async function fetchArticle(id: string) {
+const fetchArticle = cache(async (id: string) => {
   const Url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${Url}/api/article/${id}`, {
     cache: "no-store", //SSR
-  });
+  }).then((r) => r.json());
 
-  const data = await res.json();
-
-  return data.article;
-}
+  return res.article;
+});
 
 export interface Article {
   id: string;

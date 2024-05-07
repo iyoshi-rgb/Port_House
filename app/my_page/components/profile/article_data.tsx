@@ -5,7 +5,6 @@ import { TfiPencil } from "react-icons/tfi";
 import DeleteButton from "./delete_button";
 import PublishButton, { DraftButton } from "./publised_button";
 import NoarticleButton from "./noarticle_button";
-import { FaRegFaceRollingEyes } from "react-icons/fa6";
 interface Props {
   id: string;
 }

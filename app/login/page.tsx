@@ -1,8 +1,5 @@
 import { SignIn } from "@/components/session_button";
-import { Button } from "@chakra-ui/react";
-import { signIn } from "next-auth/react";
 import React from "react";
-import { FaGithub } from "react-icons/fa6";
 
 const Page = () => {
   return (
