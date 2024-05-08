@@ -27,7 +27,7 @@ interface Article {
 async function fetchArticle(id: any) {
   const Url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${Url}/api/article/${id}`, {
-    cache: "no-store", //SSR
+    cache: "force-cache", //SSG
   });
 
   const data = await res.json();
