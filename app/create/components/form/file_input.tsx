@@ -7,7 +7,7 @@ type FileInputProps = {
   id: keyof FormData;
   accept: string;
   register: UseFormRegister<FormData>;
-  fileName: string;
+  fileName: string | null;
   onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

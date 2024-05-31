@@ -26,3 +26,27 @@ export async function getUser(id : string){
         await prisma.$disconnect()
     }
 };
+
+export async function CardGetUser(id : string){
+  
+    try {
+        await connect();
+        const user = await prisma.user.findMany({
+            where: {
+                id: id,
+                },
+            select: {
+                id: true,
+                name: true,
+               image: true,
+            }
+            });    
+        return user[0];
+    }catch(err){
+        console.log(err)
+        return null
+
+    }finally{
+        await prisma.$disconnect()
+    }
+};

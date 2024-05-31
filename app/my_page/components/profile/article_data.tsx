@@ -3,7 +3,8 @@ import Link from "next/link";
 import React from "react";
 import { TfiPencil } from "react-icons/tfi";
 import DeleteButton from "./delete_button";
-
+import PublishButton, { DraftButton } from "./publised_button";
+import NoarticleButton from "./noarticle_button";
 interface Props {
   id: string;
 }
@@ -21,7 +22,6 @@ export const ArticleData: React.FC<Props> = async ({ id }) => {
   const draft_article = article?.filter((article) => article.public === false);
   const publish_article = article?.filter((article) => article.public === true);
 
-  console.log(article);
   return (
     <>
       <DraftArticleData draft_article={draft_article} id={id} />
@@ -46,10 +46,17 @@ const DraftArticleData: React.FC<DraftArticleProps> = ({
   draft_article,
   id,
 }) => {
-  if (draft_article) {
+  if (!draft_article || draft_article.length === 0) {
     return (
       <div>
-        <h3 className="text-lg font-medium">下書き</h3>
+        <h3 className="text-lg font-semibold">下書き</h3>
+        <NoarticleButton />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h3 className="text-lg font-semibold">下書き</h3>
         <div className="mt-2 space-y-2">
           {draft_article.map((draft) => {
             const daysAgo = calculateDaysAgo(draft.createdat);
@@ -75,19 +82,13 @@ const DraftArticleData: React.FC<DraftArticleProps> = ({
                   <Link href={`/my_page/${id}/${draft.id}`}>
                     <TfiPencil className="h-6 w-6 " />
                   </Link>
+                  <PublishButton id={draft.id} />
                   <DeleteButton id={draft.id} />
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h3 className="text-lg font-medium">下書き</h3>
-        <p>No Article</p>
       </div>
     );
   }
@@ -102,10 +103,17 @@ const PublishArticleData: React.FC<PublishArticleProps> = ({
   publish_article,
   id,
 }) => {
-  if (publish_article) {
+  if (!publish_article || publish_article.length === 0) {
     return (
       <div>
-        <h3 className="text-lg font-medium">公開中</h3>
+        <h3 className="text-lg font-semibold">公開中</h3>
+        <NoarticleButton />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h3 className="text-lg font-semibold">公開中</h3>
         <div className="mt-2 space-y-2">
           {publish_article.map((publish) => {
             const daysAgo = calculateDaysAgo(publish.createdat);
@@ -128,8 +136,10 @@ const PublishArticleData: React.FC<PublishArticleProps> = ({
                 </div>
                 <div className="flex gap-3 items-center">
                   <Link href={`/my_page/${id}/${publish.id}`}>
-                    <TfiPencil className="h-6 w-6 " />
+                    <TfiPencil className="h-6 w-6" />
                   </Link>
+
+                  <DraftButton id={publish.id} />
 
                   <DeleteButton id={publish.id} />
                 </div>
@@ -137,13 +147,6 @@ const PublishArticleData: React.FC<PublishArticleProps> = ({
             );
           })}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h3 className="text-lg font-medium">下書き</h3>
-        <p>No Article</p>
       </div>
     );
   }

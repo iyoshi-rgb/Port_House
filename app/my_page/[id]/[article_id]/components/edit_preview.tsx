@@ -6,14 +6,41 @@ import { TbWorld } from "react-icons/tb";
 import { FormData } from "@/types/formData";
 import { IoMdImages } from "react-icons/io";
 import { BsCameraVideo } from "react-icons/bs";
+import { createClient } from "@/utils/supabase/client";
+
+function getUrl(path: string) {
+  const supabase = createClient();
+  const { data } = supabase.storage.from("porthouse").getPublicUrl(`${path}`);
+  const url = data.publicUrl;
+  return url;
+}
 
 type Props = {
   formData: FormData;
+  imagePath: string | null;
+  videoPath: string | null;
+  article_image: string | null;
+  article_video: string | null;
 };
 
-export const Preview: React.FC<Props> = ({ formData }) => {
+export const EditPreview: React.FC<Props> = ({
+  formData,
+  imagePath,
+  videoPath,
+  article_image,
+  article_video,
+}) => {
   const [imageUrl, setImageUrl] = useState<string | undefined>();
   const [videoUrl, setVideoUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (imagePath !== null && imagePath === article_image) {
+      setImageUrl(getUrl(imagePath));
+    }
+    if (videoPath !== null && videoPath === article_video) {
+      setVideoUrl(getUrl(videoPath));
+    }
+  }, []);
 
   useEffect(() => {
     if (formData.image && formData.image.length > 0) {
@@ -92,7 +119,7 @@ export const Preview: React.FC<Props> = ({ formData }) => {
                 href={formData.appUrl}
               >
                 <TbWorld className="h-5 w-5" />
-                Visit App
+                Go App
               </Link>
             )}
           </div>

@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## サービスの URL
 
-## Getting Started
+https://port-house.vercel.app/
 
-First, run the development server:
+GitHub 認証で投稿・マイページを見ることが出来ますので、<br/>
+ぜひ自分の作品がある方は投稿してください。
+<br />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## サービスへの想い(作成の背景)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+先日にハッカソンの出場したとき（ちなみにその時の作品のレポジトリはこちらですhttps://github.com/iyoshi-rgb/MachiWatashi/）、
+チームメンバーや交流会で交流した人が「頑張ってアプリ作っても、だれにも使ってもらえない」という声をよく聞きました。<br/>
+そこで、成果物（ポートフォリオ）を投稿できるようなアプリケーションを作成することで、一人よりも多くの人に見てもらうことが出来るのではないかと思い作成しました。<br/>
+また、自身の勉強として、NextAuth,prisma,React Hook Form を使用してみたかったこともあり作成いたしました。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<br/>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 機能一覧
 
-## Learn More
+| Top 画面（!認証、投稿ナシ）                                                                                                             | Top 画面(認証済み、投稿アリ)                                                                                                            |
+| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| ![スクリーンショット 2024-05-07 150406](https://github.com/iyoshi-rgb/Port_House/assets/153269464/af4293c7-6842-46fe-80d7-8a7bc99d1b27) | ![スクリーンショット 2024-05-07 150851](https://github.com/iyoshi-rgb/Port_House/assets/153269464/e5e2e817-a344-4041-a301-a40287ac307a) |
+| NextAuth で github 認証を使用しています。                                                                                               | 認証すると、Avater が出てきて、クリックすると、マイページ、投稿作成画面に行くことが出来ます。                                           |
 
-To learn more about Next.js, take a look at the following resources:
+| 投稿作成画面                                                                                                                                 | Mypage 画面                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| ![スクリーンショット 2024-05-07 151249](https://github.com/iyoshi-rgb/Port_House/assets/153269464/357caac9-2829-4cd2-9cec-034dc1c0b65d)      | ![スクリーンショット 2024-05-07 152236](https://github.com/iyoshi-rgb/Port_House/assets/153269464/bd7abb41-2d75-4bb9-bb67-d8bdc84cc09c) |
+| useForm を使用し、watch を使用することでプレビュー表示ができるようにしています。下にボタンがあり、下書き保存か公開するか選ぶことが出来ます。 | 下書き保存と公開中でわけて表示しています。左のアイコンから編集・公開状態の変更（下書き → 公開、公開中 → 下書き）・削除ができます。      |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| 投稿詳細画面                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <video src='https://github.com/iyoshi-rgb/Port_House/assets/153269464/3e1fbcd9-2b57-41fa-b0a9-71474ac6ac7a'></video>                             |
+| 各記事の詳細を見ることが出来ます。動画を見ること、GitHub と VisitApp ボタンで登録した URL に飛ぶことが出来ます。書かれてない場合は表示されない。 |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br />
 
-## Deploy on Vercel
+## 使用技術
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Category       | Technology Stack                         |
+| -------------- | ---------------------------------------- |
+| Frontend       | TypeScript, Next.js, Chakra-ui, tailwind |
+| Backend        | Supabase                                 |
+| Infrastructure | Vercel                                   |
+| Database       | Supabase                                 |
+| etc..          | Prisma,NextAuth                          |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br/>
+
+## 挑戦&苦労&GoodPoint
+
+- 挑戦：Prisma と NextAuth の使用に挑戦しました。また、今まで Next を使っていましたが、api を使用していなかったので api を作って使用したことと、サーバーアクションも使用してみました。
+
+- 苦労：NextAuth に認証チェックを middleware で行いたかったのですが、認証しているのにチェックに引っかかったりした。（解決できず、該当ページで session を取得してきている）
+
+- よかったこと：前回までは、型エラーが出たら any で終わらしていましたが、今回はおそらく any を使わず、ちゃんと定義したこと。
+- サーバコンポネント、クライアントコンポネントの設計を前回よりもうまくでき、効率的に開発を進められたこと。
+- サーバーアクションや api,middleware など、自分が触ったことない部分も触れたこと。
+- Supabase のストレージを使って、画像や動画の取り扱いが出来たこと。
+  <br/>
+
+## 今後の展望(サービス＆個人)
+
+- 画面遷移が遅く感じるので、preload パターンなどで、遷移を早める方法を検討すること。
+- zod を使用したバリデーションチェックをする。（バリデーションチェックを忘れていた）
+- 投稿主はわかるが、その人の情報を見れないので、その人のページに飛べるようにする。
+- 細かい詳細もかけるような Form を考える
+- middleware で認証チェックできるようにし、楽に認証チェックを行う
+- layout.tsx の活用　（前回同様）
